@@ -17,17 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-LZWEncoder::LZWEncoder(UncompressedFileReader* file, CompressedFileWriter* fileout) {
-    reader = file;
-    writer = fileout;
-    dictionary = new LZWDictionary();
-}
+LZWEncoder::LZWEncoder(const LZWEncoder& orig) {}
 
-LZWEncoder::LZWEncoder(const LZWEncoder& orig) {
-}
-
-LZWEncoder::~LZWEncoder() {
-}
+LZWEncoder::~LZWEncoder() {}
 
 static void dumpP(unsigned char* seq, int size, short code){
     for (int i = 0; i < size; i++) {
@@ -62,4 +54,5 @@ void LZWEncoder::encode(){
     short code = dictionary->getCode(P, sizeP);
     //dumpP(P, sizeP, code);
     writer->write(code);
+    writer->close();
 }

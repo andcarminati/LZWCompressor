@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-UncompressedFileReader::UncompressedFileReader(char * fileName) {
+UncompressedFileReader::UncompressedFileReader(const char * fileName) {
     
     byteCount = 0;
     streampos begin,end; 

@@ -36,17 +36,19 @@ using namespace std;
 int main(int argc, char** argv) {
 
     cout << "Reading uncompressed file\n";
-    UncompressedFileReader fr("gmon.out");
-    CompressedFileWriter fw("saida.bin");
+    auto fr = std::make_unique<UncompressedFileReader>("gmon.out");
+    auto fw = std::make_unique<CompressedFileWriter>("saida.bin");
     cout << "Compressing data\n";
-    LZWEncoder encoder(&fr, &fw);
+    
+    LZWEncoder encoder(std::move(fr), std::move(fw));
     encoder.encode();
-    fw.close();
+  
     cout << "Reading compressed file\n";
-    CompressedFileReader cfr("saida.bin");
-    UncompressedFileWriter ufw("saida.txt");
+    auto cfr = std::make_unique<CompressedFileReader>("saida.bin");
+    auto ufw = std::make_unique<UncompressedFileWriter>("saida.txt");
     cout << "Decompressing data\n";
-    LZWDecoder decoder(&cfr, &ufw);
+    
+    LZWDecoder decoder(std::move(cfr), std::move(ufw));
     decoder.decode();
     cout << "Done\n";
     return 0;

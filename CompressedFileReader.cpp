@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 using namespace std;
 
-CompressedFileReader::CompressedFileReader(char * fileName) {
+CompressedFileReader::CompressedFileReader(const char * fileName) {
     dataCount = 0;
     streampos begin,end; 
     

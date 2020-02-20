@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class UncompressedFileWriter {
 public:
-    UncompressedFileWriter(char *filename);
+    UncompressedFileWriter(const char *filename);
     UncompressedFileWriter(const UncompressedFileWriter& orig);
     virtual ~UncompressedFileWriter();
     

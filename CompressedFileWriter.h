@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class CompressedFileWriter {
 public:
-    CompressedFileWriter(char *filename);
+    CompressedFileWriter(const char *filename);
     CompressedFileWriter(const CompressedFileWriter& orig);
     virtual ~CompressedFileWriter();
     

@@ -19,18 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-LZWDecoder::LZWDecoder(CompressedFileReader* reader, UncompressedFileWriter* writer) {
-    this->reader = reader;
-    this->writer = writer;
-    dictionary = new LZWDictionary();
-}
+LZWDecoder::LZWDecoder(const LZWDecoder& orig) {}
 
-LZWDecoder::LZWDecoder(const LZWDecoder& orig) {
-}
-
-LZWDecoder::~LZWDecoder() {
-    delete dictionary;
-}
+LZWDecoder::~LZWDecoder() {}
 
 
 static void dumpP(unsigned char* seq, int size, short code){
@@ -96,4 +87,5 @@ void LZWDecoder::decode(){
             }
         }
     }
+    writer->close();
 }

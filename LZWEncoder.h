@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef LZWENCODER_H
 #define	LZWENCODER_H
 
+#include <memory>
 #include "UncompressedFileReader.h"
 #include "LZWDictionary.h"
 #include "CompressedFileWriter.h"
@@ -23,15 +24,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class LZWEncoder {
 public:
-    LZWEncoder(UncompressedFileReader*, CompressedFileWriter*);
+    LZWEncoder(std::unique_ptr<UncompressedFileReader> UFR, std::unique_ptr<CompressedFileWriter> CFW):
+        reader(std::move(UFR)), writer(std::move(CFW)) {
+            dictionary = std::make_unique<LZWDictionary>();
+        };
     LZWEncoder(const LZWEncoder& orig);
     virtual ~LZWEncoder();
     
     void encode();
 private:
-    UncompressedFileReader* reader;
-    CompressedFileWriter* writer;
-    LZWDictionary* dictionary;
+    std::unique_ptr<UncompressedFileReader> reader;
+    std::unique_ptr<CompressedFileWriter> writer;
+    std::unique_ptr<LZWDictionary> dictionary;
 };
 
 #endif	/* LZWENCODER_H */

@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-CompressedFileWriter::CompressedFileWriter(char *filename) {
+CompressedFileWriter::CompressedFileWriter(const char *filename) {
 
     outFile.open(filename);
 

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class UncompressedFileReader {
 public:
-    UncompressedFileReader(char * fileName);
+    UncompressedFileReader(const char* fileName);
     UncompressedFileReader(const UncompressedFileReader& orig);
     virtual ~UncompressedFileReader();
     

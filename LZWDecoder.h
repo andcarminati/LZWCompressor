@@ -16,21 +16,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef LZWDECODER_H
 #define	LZWDECODER_H
 
+#include <memory>
 #include "CompressedFileReader.h"
 #include "LZWDictionary.h"
 #include "UncompressedFileWriter.h"
 
 
+
 class LZWDecoder {
 public:
-    LZWDecoder(CompressedFileReader*, UncompressedFileWriter*);
+    LZWDecoder(std::unique_ptr<CompressedFileReader> CFR, std::unique_ptr<UncompressedFileWriter> UFW): 
+        reader(std::move(CFR)), writer(std::move(UFW)) {
+            dictionary = std::make_unique<LZWDictionary>();
+        };
     LZWDecoder(const LZWDecoder& orig);
     virtual ~LZWDecoder();
     void decode();
 private:
-    CompressedFileReader* reader;
-    UncompressedFileWriter* writer;
-    LZWDictionary* dictionary;
+    std::unique_ptr<CompressedFileReader> reader;
+    std::unique_ptr<UncompressedFileWriter> writer;
+    std::unique_ptr<LZWDictionary> dictionary;
     void output(unsigned char*, int);
 };
 

@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class CompressedFileReader {
 public:
-    CompressedFileReader(char * fileName);
+    CompressedFileReader(const char * fileName);
     CompressedFileReader(const CompressedFileReader& orig);
     virtual ~CompressedFileReader();
     bool hasMore();
