@@ -15,6 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "CompressedFileReader.h"
 
+#include <cstring>
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -76,4 +77,14 @@ unsigned short CompressedFileReader::nextData(){
 
 int CompressedFileReader::size(){
     return (totalData*16)/12;
+}
+
+const char* CompressedFileReader::readUncompressedFileName(){
+    unsigned char size = buffer[dataCount++];
+    unsigned char* fileName = new unsigned char[size*sizeof(char)];
+    for(int i = 0; i < size; i++){
+        fileName[i] = buffer[dataCount++];
+    }
+    fileName[size] = '\0';
+    return (const char*) fileName;
 }

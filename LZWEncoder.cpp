@@ -42,7 +42,7 @@ void LZWEncoder::encode(){
             sizeP++;
         }else {
             short code = dictionary->getCode(P, sizeP);
-            dumpP(P, sizeP, code);
+            //dumpP(P, sizeP, code);
             writer->write(code);
             if(!dictionary->isFull()){
                 dictionary->insert(P, sizeP+1);

@@ -24,6 +24,7 @@ public:
     bool hasMore();
     unsigned short nextData();
     int size();
+    const char* readUncompressedFileName();
     
 private:
     unsigned char *buffer;

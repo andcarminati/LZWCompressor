@@ -26,6 +26,7 @@ public:
     virtual ~CompressedFileWriter();
     
     void write(short code);
+    void writeFileName(const char* filename);
     void close();
 private:
     

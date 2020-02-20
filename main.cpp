@@ -11,7 +11,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -32,24 +32,57 @@ using namespace std;
  * 
  */
 
+static bool exists(const char* name) {
+    if (FILE * file = fopen(name, "r")) {
+        fclose(file);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+static void encoderDriver(const char* uncompressedFileName, const char* compressedFileName) {
+
+    cout << "Reading uncompressed file\n";
+    auto fr = std::make_unique<UncompressedFileReader>(uncompressedFileName);
+    auto fw = std::make_unique<CompressedFileWriter>(compressedFileName);
+
+    fw->writeFileName(uncompressedFileName);
+
+    cout << "Compressing data\n";
+
+    LZWEncoder encoder(std::move(fr), std::move(fw));
+    encoder.encode();
+
+}
+
+static void decoderDriver(const char* compressedFileName) {
+    cout << "Reading compressed file\n";
+    auto cfr = std::make_unique<CompressedFileReader>("saida.bin");
+
+    const char* uncompressedFilename = cfr->readUncompressedFileName();
+
+    if (exists(uncompressedFilename)) {
+        cout << "Aborting decompression, file already exists" << endl;
+    } else {
+        auto ufw = std::make_unique<UncompressedFileWriter>("saida.txt");
+        cout << "Decompressing data\n";
+        LZWDecoder decoder(std::move(cfr), std::move(ufw));
+        decoder.decode();
+    }
+
+    delete[] uncompressedFilename;
+}
 
 int main(int argc, char** argv) {
 
-    cout << "Reading uncompressed file\n";
-    auto fr = std::make_unique<UncompressedFileReader>("gmon.out");
-    auto fw = std::make_unique<CompressedFileWriter>("saida.bin");
-    cout << "Compressing data\n";
-    
-    LZWEncoder encoder(std::move(fr), std::move(fw));
-    encoder.encode();
-  
-    cout << "Reading compressed file\n";
-    auto cfr = std::make_unique<CompressedFileReader>("saida.bin");
-    auto ufw = std::make_unique<UncompressedFileWriter>("saida.txt");
-    cout << "Decompressing data\n";
-    
-    LZWDecoder decoder(std::move(cfr), std::move(ufw));
-    decoder.decode();
+    const char* uncompressedFileName = "gmon.out";
+    const char* compressedFileName = "saida.bin";
+
+    encoderDriver(uncompressedFileName, compressedFileName);
+
+    decoderDriver(compressedFileName);
+
     cout << "Done\n";
     return 0;
 }

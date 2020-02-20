@@ -12,6 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <cstring>
 #include "CompressedFileWriter.h"
 
 using namespace std;
@@ -59,4 +60,10 @@ void CompressedFileWriter::close() {
         outFile.write((char*) &rest, sizeof (unsigned char));
     }
     outFile.close();
+}
+
+void CompressedFileWriter::writeFileName(const char* filename){
+    unsigned char size = strlen(filename);
+    outFile.write((char*) &size, sizeof(unsigned char));
+    outFile.write(filename, size);
 }
