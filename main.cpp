@@ -76,12 +76,45 @@ static void decoderDriver(const char* compressedFileName) {
 
 int main(int argc, char** argv) {
 
-    const char* uncompressedFileName = "gmon.out";
-    const char* compressedFileName = "saida.bin";
+    const char* input1 = NULL;
+    const char* input2 = NULL;
 
-    encoderDriver(uncompressedFileName, compressedFileName);
 
-    decoderDriver(compressedFileName);
+    if (argc == 1) {
+        cout << "Usage:" << endl;
+        cout << "Compression: " << "-c <inputfile> <outputfile>"  << endl;
+        cout << "Decompression: " << "-d <inputfile>"  << endl;
+        return -1;
+    }
+    if (argc < 3) {
+        cout << "Insuffifient number of parameters" << endl;
+        return -1;
+    }
+    input1 = argv[2];
+
+    if (argc == 4) {
+        input2 = argv[3];
+    }
+
+    if (strcmp(argv[1], "-c") == 0) {
+        const char* uncompressedFileName = input1;
+        const char* compressedFileName = NULL;
+
+        if (!input2) {
+            cout << "Omitted compression parameter (file name): " << endl;
+            return -1;
+        }
+        compressedFileName = input2;
+
+        encoderDriver(uncompressedFileName, compressedFileName);
+    } else if (strcmp(argv[1], "-d") == 0) {
+        const char* compressedFileName = input1;
+        
+        decoderDriver(compressedFileName);
+    } else {
+        cout << "Invalid parameter: " << argv[1] << endl;
+        return -1;
+    }
 
     cout << "Done\n";
     return 0;
